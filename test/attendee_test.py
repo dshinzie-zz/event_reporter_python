@@ -9,15 +9,15 @@ class AttendeeTest(unittest.TestCase):
 
     def setUp(self):
         self.data = {
-            "regdate": "1/1/1900",
-            "first_name": "FIRSTNAME",
-            "last_name": "LASTNAME",
-            "email_address": "EMAIL@EMAIL",
-            "homephone": "9999999999",
-            "street": "111 TEST ST",
-            "city": "TEST CITY",
-            "state": "TS",
-            "zipcode": "99999"
+            "RegDate": "1/1/1900",
+            "first_Name": "FIRSTNAME",
+            "last_Name": "LASTNAME",
+            "Email_Address": "EMAIL@EMAIL",
+            "HomePhone": "9999999999",
+            "Street": "111 TEST ST",
+            "City": "TEST CITY",
+            "State": "TS",
+            "Zipcode": "99999"
             }
     def test_attendee_holds_regdate(self):
         attendee = a.Attendee(self.data)

@@ -16,8 +16,7 @@ class CSVManagerTest(unittest.TestCase):
         csv = cm.CSVManager()
         csv.load_file('./event_attendees.csv')
 
-        # self.assertEqual(csv.data, list)
-        assert csv.data is not None
+        self.assertTrue(csv.data)
 
 
 if __name__ == '__main__':
