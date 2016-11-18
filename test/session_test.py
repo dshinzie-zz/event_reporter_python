@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-from __future__ import unicode_literals
 import unittest
 import sys
 sys.path.append('/Users/danielshin/Documents/turing/other/python/event_reporter_python/lib')
@@ -49,6 +47,33 @@ class SessionTest(unittest.TestCase):
         s.execute_command("queue export html test.html")
         self.assertEqual(s.params, ["export html", "test.html"])
 
+    def test_session_validates_valid_commands(self):
+        s = session.Session()
+
+        self.assertFalse(s.validate_commands("give", "money"))
+        self.assertFalse(s.validate_commands("test", "johnson"))
+        self.assertFalse(s.validate_commands("loadd", "me"))
+        self.assertTrue(s.validate_commands("load", "me"))
+
+    def test_session_validates_valid_queue_commands(self):
+        s = session.Session()
+        self.assertFalse(s.validate_commands("queue", "cry"))
+        self.assertFalse(s.validate_commands("queue", "print to"))
+        self.assertFalse(s.validate_commands("queue", "export tnt"))
+        self.assertTrue(s.validate_commands("queue", "print by"))
+
+    def test_session_can_execute_load(self):
+        s = session.Session()
+        s.execute_command("load")
+
+        self.assertTrue(s.manager.data)
+
+    def test_session_can_execute_find(self):
+        s = session.Session()
+        s.execute_command("load")
+        s.execute_command("find first_name john")
+
+        self.assertTrue(s.qm.queue)
 
 if __name__ == '__main__':
     unittest.main()

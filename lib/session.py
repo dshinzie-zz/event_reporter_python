@@ -1,6 +1,8 @@
 import sys
 sys.path.append('/Users/danielshin/Documents/turing/other/python/event_reporter_python/lib')
 import csv_manager as cm
+import os.path
+from pdb import set_trace as bp
 
 class Session:
 
@@ -11,7 +13,16 @@ class Session:
 
     def execute_command(self, command):
         self.command, self.params = self.split_parameters(command)
+        self.validate_commands(self.command, self.params)
 
+        if self.command == "load":
+            self.execute_load(self.params)
+        elif self.command == "find":
+            self.execute_find(self.params)
+        elif self.command == "queue":
+            self.execute_queue(self.params)
+        elif self.command == "help":
+            self.execute_help(self.params)
 
     def split_parameters(self, input):
         output = input.split()
@@ -25,3 +36,49 @@ class Session:
             return [output[0].lower(), [' '.join(output[1:3]), output[3]]]
         elif output[0] == "find":
             return [output[0].lower(), [output[1], ' '.join(output[2:])]]
+
+    def validate_commands(self, command, params):
+        valid_commands = ["load", "help", "queue", "find", "exit", "e", "quit", "q"]
+        valid_queue = ["count", "clear", "print", "print by", "save to", "export html", "district"]
+
+        if self.is_invalid_command(command, valid_commands):
+            print("Invalid command")
+        elif command == "queue" and type(params) is list and self.is_invalid_command(params[0], valid_queue):
+            print("Invalid queue")
+        elif command == "queue" and type(params) is str and self.is_invalid_command(params, valid_queue):
+            print("Invalid queue")
+        else:
+            return command, params
+
+    def is_invalid_command(self, input, valid_list):
+         return False if input in valid_list else True
+
+    def execute_queue(self, params):
+        pass
+
+    def execute_find(self, params):
+        pass
+
+    def find(self, params):
+        pass
+
+    def execute_load(self, input_filename):
+        filename = self.get_filename(input_filename)
+
+        if os.path.exists(filename):
+            self.manager.load_file(filename)
+            print ("File loade")
+        else:
+            print("File missing")
+            
+
+    def get_filename(self, filename):
+        if filename is None:
+            filename = './event_attendees.csv'
+        else:
+            filename = './' + ''.join(filename)
+
+        return filename
+
+    def execute_help(self, params):
+        pass
