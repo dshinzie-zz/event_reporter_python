@@ -1,14 +1,15 @@
 import sys
 sys.path.append('/Users/danielshin/Documents/turing/other/python/event_reporter_python/lib')
-import csv_manager as cm
+import csv_manager
+import queue_manager
 import os.path
 from pdb import set_trace as bp
 
 class Session:
 
     def __init__(self):
-        self.manager = cm.CSVManager()
-        self.qm = None
+        self.manager = csv_manager.CSVManager()
+        self.qm = queue_manager.QueueManager()
         self.help = None
 
     def execute_command(self, command):
@@ -54,23 +55,35 @@ class Session:
          return False if input in valid_list else True
 
     def execute_queue(self, params):
-        pass
+        if params[0] == "count":
+            if not self.qm:
+                print("Queue empty")
+            else:
+                print ("Queue count is %s" % self.qm.queue_count())
+        elif params[0] == "clear":
+            self.qm.queue_clear
+        elif params[0] == "save to":
+            self.manager.save_file(params[1], qm.queue)
 
     def execute_find(self, params):
-        pass
+        attributes = params[0]
+        criteria = ''.join(params[1:]).lower()
 
-    def find(self, params):
-        pass
+        self.find(self.manager.data, attributes, criteria)
+
+    def find(self, data, attribute, criteria):
+        results = filter(lambda d: getattr(d, attribute) == criteria, data)
+        self.qm.queue_add(results)
 
     def execute_load(self, input_filename):
         filename = self.get_filename(input_filename)
 
         if os.path.exists(filename):
             self.manager.load_file(filename)
-            print ("File loade")
+            print ("File loaded")
         else:
             print("File missing")
-            
+
 
     def get_filename(self, filename):
         if filename is None:
