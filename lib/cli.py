@@ -12,7 +12,6 @@ class CLI:
 
         while True:
             self.command = raw_input("Enter Something\n")
-
             if self.command not in self.exit_commands:
                 continue
             else:
